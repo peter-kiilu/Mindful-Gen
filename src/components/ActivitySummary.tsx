@@ -6,7 +6,7 @@ export function ActivitySummary() {
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="font-medium text-lg flex items-center gap-2">
+        <h2 className="font-medium text-lg text-black flex items-center gap-2">
           <FiActivity /> Activity
         </h2>
         <Link href="/activity" className="text-sm text-indigo-600 hover:underline">
@@ -15,7 +15,7 @@ export function ActivitySummary() {
       </div>
       <div className="space-y-3">
         <div>
-          <div className="flex justify-between text-sm mb-1">
+          <div className="flex justify-between text-sm text-gray-700 mb-1">
             <span><p>Today&apos;s activity summary:</p></span>
             <span>8,432/10,000</span>
           </div>
@@ -27,7 +27,7 @@ export function ActivitySummary() {
           </div>
         </div>
         <div>
-          <div className="flex justify-between text-sm mb-1">
+          <div className="flex justify-between text-gray-700 text-sm mb-1">
             <span>Active Minutes</span>
             <span>45/60</span>
           </div>

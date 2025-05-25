@@ -26,8 +26,8 @@ export function JournalEntryList() {
         <div key={entry.id} className="bg-white p-4 rounded-xl shadow-sm border">
           <div className="flex justify-between items-start">
             <div>
-              <h3 className="font-medium">{entry.title}</h3>
-              <p className="text-sm text-gray-500">{entry.date}</p>
+              <h3 className="font-medium text-black">{entry.title}</h3>
+              <p className="text-sm text-black">{entry.date}</p>
             </div>
             <div className="flex gap-2">
               <button className="text-gray-400 hover:text-indigo-600">

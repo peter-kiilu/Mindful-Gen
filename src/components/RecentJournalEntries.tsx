@@ -11,7 +11,7 @@ export function RecentJournalEntries() {
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="font-medium text-lg">Recent Journal Entries</h2>
+        <h2 className="font-medium text-lg text-black">Recent Journal Entries</h2>
         <Link href="/journal" className="text-sm text-indigo-600 hover:underline">
           View All
         </Link>
@@ -23,9 +23,9 @@ export function RecentJournalEntries() {
             href={`/journal/${entry.id}`}
             className="block p-3 hover:bg-gray-50 rounded-lg transition-colors"
           >
-            <h3 className="font-medium">{entry.title}</h3>
-            <p className="text-sm text-gray-500 line-clamp-1">{entry.preview}</p>
-            <p className="text-xs text-gray-400 mt-1">{entry.date}</p>
+            <h3 className="font-medium text-gray-700">{entry.title}</h3>
+            <p className="text-sm text-gray-900 line-clamp-1">{entry.preview}</p>
+            <p className="text-xs text-gray-900 mt-1">{entry.date}</p>
           </Link>
         ))}
       </div>
