@@ -1,22 +1,30 @@
-// src/components/settings/AccountSection.tsx
-"use client";
-import { FiLock, FiTrash2 } from "react-icons/fi";
-import { signOut } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import { useRouter } from "next/navigation";
+'use client';
+import { FiLock, FiTrash2 } from 'react-icons/fi';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { useRouter } from 'next/navigation';
 
 export function AccountSection() {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    await signOut(auth);
-    router.push("/login");
+    if (!auth) {
+      console.error('Firebase not initialized');
+      return;
+    }
+
+    try {
+      await signOut(auth);
+      router.push('/login');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
       <h2 className="font-medium text-lg mb-4">Account</h2>
-      
+
       <div className="space-y-4">
         <button className="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
           <div className="bg-red-100 dark:bg-red-900 p-2 rounded-full">
@@ -29,8 +37,8 @@ export function AccountSection() {
             </p>
           </div>
         </button>
-        
-        <button 
+
+        <button
           onClick={handleSignOut}
           className="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
         >
@@ -44,7 +52,7 @@ export function AccountSection() {
             </p>
           </div>
         </button>
-        
+
         <button className="w-full flex items-center gap-3 p-3 text-left hover:bg-red-50 dark:hover:bg-red-900 rounded-lg transition-colors text-red-600 dark:text-red-400">
           <div className="bg-red-100 dark:bg-red-800 p-2 rounded-full">
             <FiTrash2 />
