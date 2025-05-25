@@ -1,9 +1,8 @@
-// src/components/JournalEntryModal.tsx
 "use client";
+
 import { useState } from "react";
 import { MoodSelector } from "./MoodSelector";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { RichTextEditor } from "./RichTextEditor";
 
 type JournalEntryModalProps = {
   isOpen: boolean;
@@ -26,7 +25,7 @@ export function JournalEntryModal({ isOpen, onClose }: JournalEntryModalProps) {
             ✕
           </button>
         </div>
-        
+
         <input
           type="text"
           placeholder="Title"
@@ -34,19 +33,13 @@ export function JournalEntryModal({ isOpen, onClose }: JournalEntryModalProps) {
           onChange={(e) => setTitle(e.target.value)}
           className="mb-4 p-2 border rounded-lg"
         />
-        
+
         <MoodSelector selectedMood={mood} onSelect={setMood} />
-        
+
         <div className="flex-1 overflow-y-auto my-4">
-          <ReactQuill
-            theme="snow"
-            value={content}
-            onChange={setContent}
-            placeholder="Write your thoughts..."
-            className="h-[300px]"
-          />
+          <RichTextEditor value={content} onChange={setContent} />
         </div>
-        
+
         <div className="flex justify-end gap-3 pt-4 border-t">
           <button
             onClick={onClose}
