@@ -45,19 +45,19 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile toggle button */}
+      {/* Mobile toggle button - Updated with your requested changes */}
       {isMobile && (
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="fixed z-50 top-4 left-4 p-2 rounded-lg bg-blue text-white border border-gray-200 shadow-sm md:hidden"
+          className="fixed z-50 top-2 left-2 p-1.5 rounded-md bg-transparent text-white shadow-md md:hidden"
         >
-          {isMobileOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          {isMobileOpen ? <FiX size={20} /> : <FiMenu size={20} />}
         </button>
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - unchanged from your original */}
       <div
-        className={`fixed md:relative z-40 w-64 h-full bg-blue text-white border-r border-gray-200 p-4 flex flex-col
+        className={`fixed md:relative z-40 w-64 h-full bg-blue-100 border-r border-gray-200 p-4 flex flex-col
         transition-all duration-300 ease-in-out
         ${isMobile ? (isMobileOpen ? 'left-0' : '-left-64') : 'left-0'}`}
       >
