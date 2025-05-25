@@ -6,10 +6,10 @@ import { AccountSection } from "@/components/settings/AccountSection";
 
 export default function SettingsPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 p-4 sm:p-6">
       <h1 className="text-2xl font-bold">Settings</h1>
       
-      <div className="space-y-6">
+      <div className="space-y-5 max-w-3xl mx-auto">
         <ProfileSection />
         <AppearanceSection />
         <NotificationsSection />
