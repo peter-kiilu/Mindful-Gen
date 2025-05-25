@@ -16,7 +16,7 @@ export function ActivitySummary() {
       <div className="space-y-3">
         <div>
           <div className="flex justify-between text-sm mb-1">
-            <span>Today's Steps</span>
+            <span><p>Today&apos;s activity summary:</p></span>
             <span>8,432/10,000</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">

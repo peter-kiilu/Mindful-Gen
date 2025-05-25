@@ -14,7 +14,7 @@ export function MoodTracker() {
 
   return (
     <div className="bg-blue p-6 rounded-xl shadow-sm">
-      <h2 className="font-medium text-lg mb-4">Today's Mood</h2>
+      <h2 className="font-medium text-lg mb-4"><p>How&apos;s your mood today?</p></h2>
       <div className="flex space-x-4">
         {moods.map((mood) => (
           <button
