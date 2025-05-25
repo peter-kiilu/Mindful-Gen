@@ -49,7 +49,7 @@ export function Sidebar() {
       {isMobile && (
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="fixed z-50 top-4 left-4 p-2 rounded-lg bg-white border border-gray-200 shadow-sm md:hidden"
+          className="fixed z-50 top-4 left-4 p-2 rounded-lg bg-blue text-white border border-gray-200 shadow-sm md:hidden"
         >
           {isMobileOpen ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
@@ -57,7 +57,7 @@ export function Sidebar() {
 
       {/* Sidebar */}
       <div
-        className={`fixed md:relative z-40 w-64 h-full bg-white border-r border-gray-200 p-4 flex flex-col
+        className={`fixed md:relative z-40 w-64 h-full bg-blue text-white border-r border-gray-200 p-4 flex flex-col
         transition-all duration-300 ease-in-out
         ${isMobile ? (isMobileOpen ? 'left-0' : '-left-64') : 'left-0'}`}
       >
