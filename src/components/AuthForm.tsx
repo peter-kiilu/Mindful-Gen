@@ -25,8 +25,12 @@ export function AuthForm({ type }: AuthFormProps) {
       }
       router.push("/");
     } catch (err) {
-      setError(err.message);
-    }
+  if (err instanceof Error) {
+    setError(err.message);
+  } else {
+    setError('Something went wrong');
+  }
+}
   };
 
   return (
