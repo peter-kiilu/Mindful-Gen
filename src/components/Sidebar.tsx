@@ -2,8 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FiHome, FiBook, FiActivity, FiCloud, FiTrendingUp, FiSettings, FiLogOut, FiMenu, FiX } from "react-icons/fi";
-import { signOut } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 import { useState, useEffect } from "react";
 
 export function Sidebar() {
@@ -31,13 +30,9 @@ export function Sidebar() {
   ];
 
   const handleSignOut = async () => {
-    if (!auth) {
-      console.error("Firebase not initialized. Cannot sign out.");
-      return;
-    }
-
     try {
-      await signOut(auth);
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
     } catch (error) {
       console.error("Sign out error:", error);
     }
@@ -45,7 +40,7 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile toggle button - Updated with your requested changes */}
+      {/* Mobile toggle button */}
       {isMobile && (
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -55,29 +50,32 @@ export function Sidebar() {
         </button>
       )}
 
-      {/* Sidebar - unchanged from your original */}
+      {/* Sidebar */}
       <div
-        className={`fixed md:relative z-40 w-64 h-full bg-blue-100 border-r border-gray-200 p-4 flex flex-col
+        className={`fixed md:relative z-40 w-64 h-full bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-800/50 p-4 flex flex-col
         transition-all duration-300 ease-in-out
         ${isMobile ? (isMobileOpen ? 'left-0' : '-left-64') : 'left-0'}`}
       >
         <div className="mb-8 p-4">
-          <h1 className="text-xl font-bold text-indigo-600">MindfulGenZ</h1>
+          <h1 className="text-2xl font-black text-gradient">MindfulGenZ</h1>
+          <p className="text-[10px] tracking-widest uppercase text-gray-400 font-semibold mt-1">© 2026 Ecosystem</p>
         </div>
 
-        <nav className="flex-1 space-y-2">
+        <nav className="flex-1 space-y-1.5">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => isMobile && setIsMobileOpen(false)}
-              className={`flex items-center p-3 rounded-lg ${
+              className={`flex items-center p-3 rounded-xl transition-all duration-200 ${
                 pathname === item.href
-                  ? "bg-indigo-50 text-indigo-600"
-                  : "text-gray-600 hover:bg-gray-100"
+                  ? "bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 font-medium scale-[1.02] shadow-sm"
+                  : "text-gray-500 hover:bg-gray-100/50 dark:hover:bg-slate-800/50"
               }`}
             >
-              <span className="mr-3">{item.icon}</span>
+              <span className={`mr-3 ${pathname === item.href ? "text-indigo-600 dark:text-indigo-400" : "text-gray-400"}`}>
+                {item.icon}
+              </span>
               {item.label}
             </Link>
           ))}

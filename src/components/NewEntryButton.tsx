@@ -11,11 +11,18 @@ export function NewEntryButton() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+        className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-[1.05] active:scale-95 transition-all shadow-lg shadow-indigo-500/25"
       >
-        <FiPlus /> New Entry
+        <FiPlus size={18} /> New Flow
       </button>
-      <JournalEntryModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <JournalEntryModal 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)} 
+        onSuccess={() => {
+          // You could add a signal here to refresh lists if needed
+          window.location.reload(); // Simple way to refresh state across components
+        }}
+      />
     </>
   );
 }

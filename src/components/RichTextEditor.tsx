@@ -1,12 +1,6 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import "react-quill/dist/quill.snow.css";
-
-const ReactQuill = dynamic(() => import("react-quill"), {
-  ssr: false,
-  loading: () => <p>Loading editor...</p>,
-});
+import { useEffect, useRef } from "react";
 
 type RichTextEditorProps = {
   value: string;
@@ -14,13 +8,27 @@ type RichTextEditorProps = {
 };
 
 export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-resize logic
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [value]);
+
   return (
-    <ReactQuill
-      theme="snow"
-      value={value}
-      onChange={onChange}
-      placeholder="Write your thoughts..."
-      className="h-[300px]"
-    />
+    <div className="w-full">
+      <textarea
+        ref={textareaRef}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Type your thoughts freely... (Sentence for sentence, exact words only)"
+        className="w-full bg-transparent border-none focus:ring-0 text-slate-800 dark:text-gray-200 placeholder:text-gray-500 resize-none min-h-[200px] text-lg leading-relaxed font-medium"
+        spellCheck="true"
+      />
+    </div>
   );
 }

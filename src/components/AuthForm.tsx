@@ -1,11 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { auth } from '@/lib/firebase';
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from 'firebase/auth';
+import { supabase } from '@/lib/supabase';
 
 type AuthFormProps = {
   type: 'login' | 'register';
@@ -15,76 +11,91 @@ export function AuthForm({ type }: AuthFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(''); // Clear previous error
-
-    if (!auth) {
-      setError('Firebase not initialized. Please try again later.');
-      return;
-    }
+    setError('');
+    setLoading(true);
 
     try {
       if (type === 'login') {
-        await signInWithEmailAndPassword(auth, email, password);
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) throw error;
       } else {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+        if (error) throw error;
       }
       router.push('/');
+      router.refresh();
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('Something went wrong');
+        setError('Connection to ecosystem failed.');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {error && <div className="text-red-500 text-sm">{error}</div>}
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {error && (
+        <div className="p-4 bg-pink-500/10 border border-pink-500/20 text-pink-500 text-xs font-bold rounded-2xl animate-shake">
+          {error}
+        </div>
+      )}
 
-      <div>
+      <div className="space-y-2">
         <label
           htmlFor="email"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1"
         >
-          Email
+          Neural ID (Email)
         </label>
         <input
           type="email"
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+          placeholder="id@ecosystem.2026"
+          className="block w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-slate-800 dark:text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium"
           required
         />
       </div>
 
-      <div>
+      <div className="space-y-2">
         <label
           htmlFor="password"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1"
         >
-          Password
+          Access Key
         </label>
         <input
           type="password"
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+          placeholder="••••••••"
+          className="block w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-slate-800 dark:text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all font-medium"
           required
         />
       </div>
 
       <button
         type="submit"
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+        disabled={loading}
+        className="w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
       >
-        {type === 'login' ? 'Sign In' : 'Create Account'}
+        {loading ? 'Processing...' : type === 'login' ? 'Establish Connection' : 'Register Identity'}
       </button>
     </form>
   );

@@ -10,8 +10,8 @@ import { ThemeProvider } from "@/context/ThemeContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MindfulGen | Mental Wellness Journal",
-  description: "A wellness app for Gen Z",
+  title: "MindfulGen 2026 | Next-Gen Wellness Ecosystem",
+  description: "Advanced mental wellness and productivity platform for the 2026 generation.",
 };
 
 export default function RootLayout({
@@ -24,9 +24,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <AuthProvider>
-            <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+            <div className="flex h-screen bg-white dark:bg-slate-950 overflow-hidden">
               <Sidebar />
-              <main className="flex-1 overflow-y-auto p-8">{children}</main>
+              <main className="flex-1 overflow-y-auto p-8 premium-gradient-bg">{children}</main>
             </div>
           </AuthProvider>
         </ThemeProvider>

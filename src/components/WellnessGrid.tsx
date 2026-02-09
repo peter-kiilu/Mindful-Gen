@@ -4,28 +4,28 @@ import { FiBook, FiHeart, FiActivity, FiCloud } from "react-icons/fi";
 
 const cards = [
   {
-    title: "Journal",
-    icon: <FiBook className="text-blue-500" size={24} />,
+    title: "Vessel Labs",
+    icon: <FiBook className="text-indigo-400" size={28} />,
     href: "/journal",
-    color: "bg-blue-50 hover:bg-blue-100",
+    description: "Personal thought synchronization",
   },
   {
-    title: "Mood Tracker",
-    icon: <FiHeart className="text-pink-500" size={24} />,
+    title: "Core Vitals",
+    icon: <FiHeart className="text-pink-400" size={28} />,
     href: "/mood",
-    color: "bg-pink-50 hover:bg-pink-100",
+    description: "Emotional state telemetry",
   },
   {
-    title: "Activity",
-    icon: <FiActivity className="text-green-500" size={24} />,
+    title: "Kinetic Flow",
+    icon: <FiActivity className="text-emerald-400" size={28} />,
     href: "/activity",
-    color: "bg-green-50 hover:bg-green-100",
+    description: "Physical optimization tracking",
   },
   {
-    title: "Meditation",
-    icon: <FiCloud className="text-purple-500" size={24} />,
+    title: "Neural Void",
+    icon: <FiCloud className="text-purple-400" size={28} />,
     href: "/meditation",
-    color: "bg-purple-50 hover:bg-purple-100",
+    description: "Consciousness recalibration",
   },
 ];
 
@@ -36,10 +36,15 @@ export function WellnessGrid() {
         <Link
           key={card.title}
           href={card.href}
-          className={`${card.color} p-6 rounded-xl shadow-sm transition-all duration-200 flex flex-col items-center justify-center space-y-3 min-h-[150px]`}
+          className="glass-card p-8 rounded-[2rem] shadow-sm transition-all duration-300 hover:scale-[1.02] hover:bg-white/10 flex flex-col items-start justify-center space-y-4 min-h-[180px] border-none group"
         >
-          {card.icon}
-          <h3 className="font-medium text-gray-800">{card.title}</h3>
+          <div className="p-4 bg-white/5 rounded-2xl group-hover:scale-110 transition-transform duration-500">
+            {card.icon}
+          </div>
+          <div>
+            <h3 className="font-black text-slate-800 dark:text-white uppercase tracking-widest text-xs mb-1">{card.title}</h3>
+            <p className="text-[10px] text-gray-500 font-medium leading-tight">{card.description}</p>
+          </div>
         </Link>
       ))}
     </div>

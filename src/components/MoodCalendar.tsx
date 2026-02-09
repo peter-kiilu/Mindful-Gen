@@ -1,25 +1,56 @@
 'use client';
-import { useState } from 'react';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
+import { FiChevronLeft, FiChevronRight, FiCalendar } from 'react-icons/fi';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/lib/authContext';
 
 const moods = {
-  happy: 'bg-blue-300 text-white',
-  neutral: 'bg-blue-400 text-white',
-  sad: 'bg-blue-500 text-white',
-  energetic: 'bg-blue-700 text-white',
+  peak: 'bg-gradient-to-br from-purple-500 to-indigo-600 text-white shadow-lg shadow-purple-500/20',
+  happy: 'bg-gradient-to-br from-indigo-400 to-blue-500 text-white shadow-lg shadow-indigo-500/20',
+  neutral: 'bg-gradient-to-br from-cyan-400 to-teal-500 text-white shadow-lg shadow-cyan-500/20',
+  sad: 'bg-gradient-to-br from-pink-400 to-rose-500 text-white shadow-lg shadow-pink-500/20',
+  energetic: 'bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-lg shadow-amber-500/20',
 };
 
 type Mood = keyof typeof moods;
 
-const moodData: Record<string, Mood> = {
-  '2023-06-15': 'happy',
-  '2023-06-16': 'neutral',
-  '2023-06-17': 'sad',
-  '2023-06-18': 'energetic',
-};
-
 export function MoodCalendar() {
+  const { user } = useAuth();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [moodData, setMoodData] = useState<Record<string, Mood>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchMoods() {
+      if (!user) return;
+      
+      const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).toISOString();
+      const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).toISOString();
+
+      try {
+        const { data, error } = await supabase
+          .from("moods")
+          .select("date, mood")
+          .eq("user_id", user.id)
+          .gte("date", firstDay.split('T')[0])
+          .lte("date", lastDay.split('T')[0]);
+
+        if (error) throw error;
+
+        const mapped = (data || []).reduce((acc, curr) => {
+          acc[curr.date] = curr.mood as Mood;
+          return acc;
+        }, {} as Record<string, Mood>);
+
+        setMoodData(mapped);
+      } catch (err) {
+        console.error("Error fetching moods:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchMoods();
+  }, [user, currentDate]);
 
   const daysInMonth = new Date(
     currentDate.getFullYear(),
@@ -34,21 +65,23 @@ export function MoodCalendar() {
   ).getDay();
 
   return (
-    <div className="bg-blue p-6 rounded-xl shadow-sm text-white">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="font-medium text-lg">Mood Calendar</h2>
-        <div className="flex items-center gap-4">
+    <div className="glass-card p-8 rounded-[2rem] shadow-sm text-slate-800 dark:text-white relative overflow-hidden border-none">
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="font-black text-xl flex items-center gap-2">
+          <FiCalendar className="text-indigo-500" /> Timeline
+        </h2>
+        <div className="flex items-center gap-6">
           <button
             onClick={() =>
               setCurrentDate(
                 new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
               )
             }
-            className="hover:text-blue-300"
+            className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400"
           >
-            <FiChevronLeft />
+            <FiChevronLeft size={20} />
           </button>
-          <span className="font-medium">
+          <span className="font-black uppercase tracking-[0.2em] text-xs">
             {currentDate.toLocaleString('default', {
               month: 'long',
               year: 'numeric',
@@ -60,18 +93,18 @@ export function MoodCalendar() {
                 new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
               )
             }
-            className="hover:text-blue-300"
+            className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400"
           >
-            <FiChevronRight />
+            <FiChevronRight size={20} />
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-2">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+      <div className="grid grid-cols-7 gap-3">
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, idx) => (
           <div
-            key={day}
-            className="text-center font-medium text-sm py-2"
+            key={`${day}-${idx}`}
+            className="text-center font-black text-[10px] text-gray-400 py-2"
           >
             {day}
           </div>
@@ -91,8 +124,8 @@ export function MoodCalendar() {
           return (
             <div
               key={day}
-              className={`h-10 flex items-center justify-center rounded-full ${
-                mood ? moods[mood] : 'bg-blue-800'
+              className={`h-10 w-10 mx-auto flex items-center justify-center rounded-2xl text-[10px] font-black transition-all duration-300 ${
+                mood ? moods[mood] : 'bg-white/5 text-gray-500 hover:bg-white/10'
               }`}
             >
               {day}

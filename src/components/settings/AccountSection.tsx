@@ -1,20 +1,15 @@
 'use client';
 import { FiLock, FiTrash2 } from 'react-icons/fi';
-import { signOut } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
 export function AccountSection() {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    if (!auth) {
-      console.error('Firebase not initialized');
-      return;
-    }
-
     try {
-      await signOut(auth);
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
       router.push('/login');
     } catch (error) {
       console.error('Error signing out:', error);
@@ -27,8 +22,8 @@ export function AccountSection() {
 
       <div className="space-y-4">
         <button className="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
-          <div className="bg-red-100 dark:bg-red-900 p-2 rounded-full">
-            <FiLock className="text-red-600 dark:text-red-300" />
+          <div className="bg-indigo-100 dark:bg-indigo-900 p-2 rounded-full">
+            <FiLock className="text-indigo-600 dark:text-indigo-300" />
           </div>
           <div>
             <h3 className="font-medium">Change Password</h3>

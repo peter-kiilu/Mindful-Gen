@@ -8,7 +8,7 @@ export function UserGreeting() {
   return (
     <div className="space-y-1">
       <h1 className="text-2xl font-bold text-white-900">
-        Hello, {user?.displayName || "Friend"} 👋
+        Hello, {user?.user_metadata?.full_name || "Friend"} 👋
       </h1>
       <p className="text-blue-500">How are you feeling today?</p>
     </div>

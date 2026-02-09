@@ -3,10 +3,10 @@
 import { FiSmile, FiMeh, FiFrown, FiZap } from "react-icons/fi";
 
 const moods = [
-  { icon: <FiSmile />, label: "Happy", value: "happy", color: "text-green-500" },
-  { icon: <FiMeh />, label: "Neutral", value: "neutral", color: "text-yellow-500" },
-  { icon: <FiFrown />, label: "Sad", value: "sad", color: "text-red-500" },
-  { icon: <FiZap />, label: "Energetic", value: "energetic", color: "text-purple-500" },
+  { icon: <FiZap size={18} />, label: "Peak", value: "energetic", color: "text-purple-500", bg: "bg-purple-500/10" },
+  { icon: <FiSmile size={18} />, label: "High", value: "happy", color: "text-indigo-500", bg: "bg-indigo-500/10" },
+  { icon: <FiMeh size={18} />, label: "Level", value: "neutral", color: "text-cyan-500", bg: "bg-cyan-500/10" },
+  { icon: <FiFrown size={18} />, label: "Low", value: "sad", color: "text-pink-500", bg: "bg-pink-500/10" },
 ];
 
 export function MoodSelector({
@@ -17,18 +17,21 @@ export function MoodSelector({
   onSelect: (mood: string) => void;
 }) {
   return (
-    <div className="flex gap-2 mb-4">
+    <div className="flex flex-wrap gap-3 mb-6">
       {moods.map((mood) => (
         <button
           key={mood.value}
+          type="button"
           onClick={() => onSelect(mood.value)}
-          className={`flex items-center gap-2 px-3 py-2 rounded-full text-sm ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 border ${
             selectedMood === mood.value
-              ? `${mood.color} bg-opacity-20 ${mood.color.replace('text', 'bg')}`
-              : "bg-gray-100 hover:bg-gray-200"
+              ? `${mood.color} ${mood.bg} border-${mood.color.split('-')[1]}-500/30 scale-105 shadow-lg shadow-indigo-500/5`
+              : "bg-white/5 border-transparent text-gray-500 hover:bg-white/10"
           }`}
         >
-          <span className={mood.color}>{mood.icon}</span>
+          <span className={selectedMood === mood.value ? mood.color : "text-gray-400"}>
+            {mood.icon}
+          </span>
           {mood.label}
         </button>
       ))}

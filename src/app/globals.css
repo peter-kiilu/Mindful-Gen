@@ -3,19 +3,43 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --accent: #6366f1;
+  --accent-glow: rgba(99, 102, 241, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #020617;
+    --foreground: #f8fafc;
+    --accent: #818cf8;
+    --accent-glow: rgba(129, 140, 248, 0.2);
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Inter", sans-serif;
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-slate-800/50 shadow-xl shadow-indigo-500/5;
+  }
+
+  .premium-gradient-bg {
+    background:
+      radial-gradient(circle at top right, var(--accent-glow), transparent 40%),
+      radial-gradient(
+        circle at bottom left,
+        var(--accent-glow),
+        transparent 40%
+      );
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500;
+  }
 }
