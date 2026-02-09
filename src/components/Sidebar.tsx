@@ -58,7 +58,6 @@ export function Sidebar() {
       >
         <div className="mb-8 p-4">
           <h1 className="text-2xl font-black text-gradient">MindfulGenZ</h1>
-          <p className="text-[10px] tracking-widest uppercase text-gray-400 font-semibold mt-1">© 2026 Ecosystem</p>
         </div>
 
         <nav className="flex-1 space-y-1.5">
